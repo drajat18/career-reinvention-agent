@@ -66,3 +66,43 @@ Open http://localhost:8080
 | `GOOGLE_CLOUD_LOCATION` | e.g. `us-central1` |
 
 ## Architecture
+
+User Input (Resume + Target Role)
+│
+▼
+┌─────────────────────┐
+│  FastAPI + SSE      │  ← streams progress to UI
+└─────────────────────┘
+│
+▼
+┌─────────────────────────────────────────────┐
+│           Agent Pipeline                    │
+│  1. JobResearchAgent  → live web search     │
+│  2. GapAnalysisAgent  → resume vs market    │
+│  3. LearningPathAgent → courses + certs     │
+│  4. RoadmapAgent      → 90-day plan         │
+│  5. ContentWriterAgent→ LinkedIn makeover   │
+└─────────────────────────────────────────────┘
+│
+▼
+Tabbed Report + PDF Download
+
+## Deploy to Google Cloud Run
+
+```bash
+docker build --platform linux/amd64 -t gcr.io/YOUR_PROJECT/career-agent .
+docker push gcr.io/YOUR_PROJECT/career-agent
+gcloud run deploy career-reinvention-agent \
+  --image gcr.io/YOUR_PROJECT/career-agent \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated
+```
+
+## Author
+
+Built by [Rajat Dixit](https://www.linkedin.com/in/YOUR_LINKEDIN) 
+as part of a career transition from Frontend Engineer → AI Solutions Architect.
+
+---
+⭐ Star this repo if it helped you!
